@@ -9,20 +9,25 @@ import striver_sde_sheet_scraper
 def create_dir_structure(topic_name: str, topic_contents: List[dict], force_overwrite: bool = False) -> None:
     os.mkdir(topic_name)
     os.chdir(topic_name)
+    topic_dir = os.getcwd()
     for problem in topic_contents:
-        create_file_details(problem)
+        os.chdir(topic_dir)
+        create_problem_dir(problem)
 
 
-def create_file_details(problem_data: dict) -> None:
-    filename = '{}.py'.format(slugify(problem_data['name'], separator='_', replacements=(("'", ""),)))
+def create_problem_dir(problem_data: dict) -> None:
+    dir_name = slugify(problem_data['name'], separator='_', replacements=(("'", ""),))
     lines = [
         '"""',
         'Problem Name: {}'.format(problem_data['name']),
         'TUF Link: {}'.format(problem_data.get('editorial', 'N/A')),
         '"""\n',
     ]
-    with open(filename, 'w') as file:
-        file.writelines('\n'.join(lines))
+    os.mkdir(dir_name)
+    os.chdir(dir_name)
+    for file_number in range(1, 3):
+        with open('solution_{}.py'.format(file_number), 'w') as file:
+            file.writelines('\n'.join(lines[:-1] + ['Solution {}'.format(file_number)] + [lines[-1]]))
 
 
 def main(filename: str = 'striver_sde_sheet_data.json'):
