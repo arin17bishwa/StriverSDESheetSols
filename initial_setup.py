@@ -25,7 +25,7 @@ def create_problem_dir(problem_data: dict) -> None:
     ]
     os.mkdir(dir_name)
     os.chdir(dir_name)
-    for file_number in range(1, 3):
+    for file_number in range(1, 5):
         with open('solution_{}.py'.format(file_number), 'w') as file:
             file.writelines('\n'.join(lines[:-1] + ['Solution {}'.format(file_number)] + [lines[-1]]))
 
